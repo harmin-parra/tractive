@@ -10,7 +10,7 @@ class SettingsPage {
 
   // Assert the page/form is displayed
   async verifyPageDisplayed() {
-    await expect(this.page).toHaveURL("/#/settings");
+    await expect(this.page).toHaveURL("/#/settings/");
   }
 }
 
