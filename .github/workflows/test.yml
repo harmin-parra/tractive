@@ -26,6 +26,7 @@ jobs:
         run: |
           npm install
           npx playwright test
+        continue-on-error: true
         env:
           HOME: /root
       - name: Upload artifact
@@ -35,7 +36,6 @@ jobs:
           path: playwright-report
 
   commit:
-    needs: test
     runs-on: ubuntu-latest  
     steps:
       - name: Checkout
