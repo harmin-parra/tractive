@@ -55,7 +55,7 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "noreply@github.com"
-          git rm -r docs
+          git rm -rf docs
           mkdir docs
           mv playwright-report/* docs/
           git add -f docs/*
