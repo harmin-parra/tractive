@@ -7,6 +7,7 @@ import * as data from '../data';
 //import ActivationPage from '../pages/activationPage';
 import { AssertionError } from 'assert';
 import DemoPage from '../pages/demoPage';
+import SettingsPage from '../pages/settingsPage';
 
 
 test.use({
@@ -37,7 +38,8 @@ test('Login with valid account', async ({ page }, testInfo) => {
     if (error instanceof AssertionError)
       throw error;
   }
-  // TODO: Verify the next web page is displayed
+  const settings: SettingsPage = new SettingsPage(page);
+  await settings.verifyPageDisplayed();
 });
 
 test('Click Tractive logo', async ({ page }, testInfo) => {
@@ -94,7 +96,7 @@ test('Login with unknown email', async ({ page }, testInfo) => {
   const login: LoginPage = new LoginPage(page);
   await testInfo.attach("Login page", {body: await page.screenshot(), contentType: "image/png"});
   await login.verifyPageDisplayed();
-  await login.setEmail("unknown@efree.fr");
+  await login.setEmail("unknown@free.fr");
   await login.setPassword(data.password);
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await login.assertSigninButtonEnabled(true);
