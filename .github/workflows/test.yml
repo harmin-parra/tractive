@@ -1,0 +1,34 @@
+name: playwright/node.js
+
+on:
+  workflow_dispatch:
+    inputs:
+      browser:
+        description: 'The browser to use'
+        default: 'firefox'
+        required: true
+        type: choice
+        options:
+        - firefox
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.48.1-noble
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Test
+        run: |
+          npx playwright test
+        env:
+          HOME: /root
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifact_test
+          path: reporting/
