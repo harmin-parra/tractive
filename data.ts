@@ -1,5 +1,5 @@
 export const email = "harmin@free.fr";
-export const dummyemail = "test@free.fr";
+export const dummyemail = "dummy@free.fr";
 export const password = "password";
 export const firstname = "Harmin";
 export const lastname = "Parra";
