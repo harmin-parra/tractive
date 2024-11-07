@@ -1,4 +1,4 @@
-name: playwright/node.js
+name: playwright tests
 
 on:
   workflow_dispatch:
