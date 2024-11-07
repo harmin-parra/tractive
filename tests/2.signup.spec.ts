@@ -35,17 +35,15 @@ test('Sign up with email', async ({ page }, testInfo) => {
   await signup.assertCreateButtonEnabled(true);
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await signup.clickCreateButton();
-  await page.waitForTimeout(3000);  // Necessary delay to take screenshot of popup error (if any).
-  await testInfo.attach("After sign up", {body: await page.screenshot(), contentType: "image/png"});
+  // Verify if we land in the Activation page
   try {
-    await signup.verifyPageDisplayed();
-    throw new AssertionError({message: "Sign-up failure. Sign-up page is still displayed"});
+    const activation: ActivationPage = new ActivationPage(page);
+    await activation.verifyPageDisplayed();
   } catch(error) {
-    if (error instanceof AssertionError)
-      throw error;
+      throw new AssertionError({message: "Sign-up failure. The sign-up page is still displayed"});
+  } finally {
+    await testInfo.attach("After sign-up attempt", {body: await page.screenshot(), contentType: "image/png"});
   }
-  const activation: ActivationPage = new ActivationPage(page);
-  await activation.verifyPageDisplayed();
 });
 
 test('Cancel Sign up', async ({ page }, testInfo) => {
@@ -94,8 +92,17 @@ test('Account already exists', async ({ page }, testInfo) => {
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await signup.assertCreateButtonEnabled(true);
   await signup.clickCreateButton();
-  await testInfo.attach("After creation attempt", {body: await page.screenshot(), contentType: "image/png"});
-  await signup.verifyPageDisplayed();
+  // Verify if we land in the Activation page
+  try {
+    const activation: ActivationPage = new ActivationPage(page);
+    await activation.verifyPageDisplayed();
+    throw new AssertionError({message: "An account was created with the same information of an already existing account."});
+  } catch(error) {
+    if (error instanceof AssertionError)
+      throw error;
+  } finally {
+    await testInfo.attach("After creation attempt", {body: await page.screenshot(), contentType: "image/png"});
+  }
 });
 
 test('Sign up with empty form', async ({ page }, testInfo) => {
@@ -171,17 +178,3 @@ test('Sign up with short password', async ({ page }, testInfo) => {
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await signup.assertCreateButtonEnabled(false);
 });
-
-/*
-test('Sign up with long password', async ({ page }, testInfo) => {
-  const signup: SignupPage = new SignupPage(page);
-  await testInfo.attach("Sign up page", {body: await page.screenshot(), contentType: "image/png"});
-  await signup.verifyPageDisplayed();
-  await signup.setFirstName(data.firstname);
-  await signup.setLastName(data.lastname);
-  await signup.setEmail(data.dummyemail);
-  await signup.setPassword('x'.repeat(64));
-  await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
-  await signup.assertCreateButtonEnabled(false);
-});
-*/

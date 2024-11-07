@@ -4,7 +4,6 @@ import { clickLogo } from '../components/logo';
 import { Language, selectLanguage } from '../components/language';
 import { acceptCookies } from '../components/cookies';
 import * as data from '../data';
-//import ActivationPage from '../pages/activationPage';
 import { AssertionError } from 'assert';
 import DemoPage from '../pages/demoPage';
 import SettingsPage from '../pages/settingsPage';
@@ -29,17 +28,15 @@ test('Login with valid account', async ({ page }, testInfo) => {
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await login.assertSigninButtonEnabled(true);
   await login.clickSigninButton();
-  await page.waitForTimeout(3000);  // Necessary delay to take screenshot of popup error (if any).
-  await testInfo.attach("After login", {body: await page.screenshot(), contentType: "image/png"});
+  // Verify if we land in the Settings page
   try {
-    await login.verifyPageDisplayed();
-    throw new AssertionError({ message: "Login failure. Login page is still displayed" });
+    const settings: SettingsPage = new SettingsPage(page);
+    await settings.verifyPageDisplayed();
   } catch(error) {
-    if (error instanceof AssertionError)
-      throw error;
+      throw new AssertionError({message: "Login failure."});
+  } finally {
+    await testInfo.attach("After login attempt", {body: await page.screenshot(), contentType: "image/png"});
   }
-  const settings: SettingsPage = new SettingsPage(page);
-  await settings.verifyPageDisplayed();
 });
 
 test('Click Tractive logo', async ({ page }, testInfo) => {
