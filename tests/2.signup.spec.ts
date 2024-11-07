@@ -29,7 +29,7 @@ test('Sign up with email', async ({ page }, testInfo) => {
   await signup.verifyPageDisplayed();
   await signup.setFirstName(data.firstname);
   await signup.setLastName(data.lastname);
-  await signup.setEmail("abcdef@free.fr");
+  await signup.setEmail(data.email);
   await signup.setPassword(data.password);
   await signup.checkNewsletterCheckbox();
   await signup.assertCreateButtonEnabled(true);
@@ -44,9 +44,8 @@ test('Sign up with email', async ({ page }, testInfo) => {
     if (error instanceof AssertionError)
       throw error;
   }
-  // TODO: Verify the next web page is displayed
-  //const activation: ActivationPage = new ActivationPage(page);
-  //await activation.verifyPageDisplayed();
+  const activation: ActivationPage = new ActivationPage(page);
+  await activation.verifyPageDisplayed();
 });
 
 test('Cancel Sign up', async ({ page }, testInfo) => {
@@ -84,7 +83,6 @@ test('Sign up page in French', async ({ page }, testInfo) => {
 
 // Invalid tests
 test('Account already exists', async ({ page }, testInfo) => {
-  throw new AssertionError({ message: "Depends on failing 'Sign up with email' test" });
   const signup: SignupPage = new SignupPage(page);
   await testInfo.attach("Sign up page", {body: await page.screenshot(), contentType: "image/png"});
   await signup.verifyPageDisplayed();
