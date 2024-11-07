@@ -31,4 +31,30 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: artifact_test
-          path: reporting/
+          path: playwright-report
+
+  commit:
+    needs: test
+    runs-on: ubuntu-latest  
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # for commit in same repo, delete the 'with' section
+        #with:
+        #  repository: harmin-parra/tractive
+        #  ref: 'main'
+        #  token:  ${{ vars.TOKEN }}
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: artifact_report
+          path: reporting
+      - name: Commit
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "noreply@github.com"
+          git rm -r docs/*
+          mv playwright-report/* docs/
+          git add -f docs/*
+          git commit -m "Github Actions commit"
+          git push origin main
