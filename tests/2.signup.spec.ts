@@ -45,7 +45,6 @@ test('Sign up with email', async ({ page }, testInfo) => {
       throw error;
   }
   // TODO: Verify the next web page is displayed
-  // TODO: Verify the next web page is displayed
   //const activation: ActivationPage = new ActivationPage(page);
   //await activation.verifyPageDisplayed();
 });
