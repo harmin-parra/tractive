@@ -49,8 +49,8 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: artifact_report
-          path: reporting
+          name: artifact_test
+          path: playwright-report
       - name: Commit
         run: |
           git config --global user.name "GitHub Actions"
