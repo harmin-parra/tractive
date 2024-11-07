@@ -36,6 +36,7 @@ jobs:
           path: playwright-report
 
   commit:
+    needs: test
     runs-on: ubuntu-latest  
     steps:
       - name: Checkout
