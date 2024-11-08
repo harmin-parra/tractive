@@ -87,8 +87,6 @@ test('Sign up page in French', async ({ page }, testInfo) => {
   await selectLanguage(page, Language.French);
   await page.waitForTimeout(3000); // Necessary delay for the next screenshot
   await testInfo.attach("French language", {body: await page.screenshot(), contentType: "image/png"});
-  //await signup.verifyInternationalization(Language.French);
-  //await selectLanguage(page, Language.English_US);
 });
 
 // Invalid tests
