@@ -80,12 +80,12 @@ test('Sign up page in French', async ({ page }, testInfo) => {
 });
 
 // Invalid tests
-test('Account already exists', async ({ page }, testInfo) => {
+test('Account with already existing email', async ({ page }, testInfo) => {
   const signup: SignupPage = new SignupPage(page);
   await testInfo.attach("Sign up page", {body: await page.screenshot(), contentType: "image/png"});
   await signup.verifyPageDisplayed();
-  await signup.setFirstName(data.firstname);
-  await signup.setLastName(data.lastname);
+  await signup.setFirstName("Ernest");
+  await signup.setLastName("Hemingway");
   await signup.setEmail(data.email);
   await signup.setPassword(data.password);
   await signup.checkNewsletterCheckbox();
@@ -96,7 +96,7 @@ test('Account already exists', async ({ page }, testInfo) => {
   try {
     const activation: ActivationPage = new ActivationPage(page);
     await activation.verifyPageDisplayed();
-    throw new AssertionError({message: "An account was created with the same information of an already existing account."});
+    throw new AssertionError({message: "An account was created with the same email of an already existing account."});
   } catch(error) {
     if (error instanceof AssertionError)
       throw error;
