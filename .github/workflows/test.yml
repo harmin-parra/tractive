@@ -9,6 +9,7 @@ on:
         required: true
         type: choice
         options:
+        - chromium
         - firefox
 
 jobs:
@@ -25,7 +26,7 @@ jobs:
       - name: Test
         run: |
           npm install
-          npx playwright test
+          npx playwright test --project ${{ inputs.browser }}
         continue-on-error: true
         env:
           HOME: /root
