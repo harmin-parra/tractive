@@ -56,10 +56,12 @@ test('Click Privacy Policy link', async ({ page }, testInfo) => {
   const cookies: CookiesPopup = new CookiesPopup(page);
   await testInfo.attach("Cookie popup", {body: await page.screenshot(), contentType: "image/png"});
   await cookies.verifyPopupDisplayed();
+  const pdfPromise = page.waitForEvent('popup');
   await cookies.clickPrivacyLink();
-  await testInfo.attach("After Privacy Policy click", {body: await page.screenshot(), contentType: "image/png"});
+  const pdf = await pdfPromise;
+  //await testInfo.attach("After Privacy Policy click", {body: await page.screenshot(), contentType: "image/png"});
   await cookies.verifyPopupDisplayed();
   // Verify if there are 2 open tabs in the browser
   assert(page.context().pages().length == 2, "Expecting 2 open tabs");
-  // TODO: verify 2nd tab URL
+  await expect(pdf).toHaveURL(/https:\/\/assets\.tractive\.com\/static\/legal\/.*/);
 });
