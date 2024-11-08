@@ -24,7 +24,7 @@ class CookiesPopup {
     this.okButton = this.popup.locator("//button[2]");
     this.essentialButton = this.popup.locator("//button[1]");
     this.customizeLink = this.popup.locator(".js-cookie-consent-settings");
-    this.privacyLink = this.popup.locator("a[1]")
+    this.privacyLink = this.popup.locator("a[href='https://tractive.com/gen/l/privacy']");
     this.acceptAllButton = this.popup.locator("//button");
     this.acceptSelectionButton = this.popup.locator(".js-cookie-consent-update");
   }

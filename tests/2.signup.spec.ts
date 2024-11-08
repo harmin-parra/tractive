@@ -1,5 +1,5 @@
-import { test } from '@playwright/test';
-import { AssertionError } from 'assert';
+import { expect, test } from '@playwright/test';
+import assert, { AssertionError } from 'assert';
 import { acceptCookies } from '../components/cookies';
 import { Language, selectLanguage } from '../components/language';
 import { clickLogo } from '../components/logo';
@@ -77,6 +77,26 @@ test('Try demo', async ({ page }, testInfo) => {
   // Verify if we land in the Demo page
   const demo: DemoPage = new DemoPage(page);
   await demo.verifyPageDisplayed();
+});
+
+test('Click Privacy Policy link', async ({ page }, testInfo) => {
+  const signup: SignupPage = new SignupPage(page);
+  await testInfo.attach("Sign up page", {body: await page.screenshot(), contentType: "image/png"});
+  await signup.verifyPageDisplayed();
+  await signup.clickPrivacyLink();
+  // Verify if there are 2 open tabs in the browser
+  assert(page.context().pages().length == 2, "Expecting 2 open tabs");
+  //TODO: verify 2nd tab URL
+});
+
+test('Click Terms & Conditions link', async ({ page }, testInfo) => {
+  const signup: SignupPage = new SignupPage(page);
+  await testInfo.attach("Sign up page", {body: await page.screenshot(), contentType: "image/png"});
+  await signup.verifyPageDisplayed();
+  await signup.clickTermsLink();
+  // Verify if there are 2 open tabs in the browser
+  assert(page.context().pages().length == 2, "Expecting 2 open tabs");
+  //TODO: verify 2nd tab URL
 });
 
 // Internationalization tests

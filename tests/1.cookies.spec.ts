@@ -1,5 +1,6 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import CookiesPopup from '../pages/cookiesPopup';
+import assert from 'assert';
 
 test.use({
   storageState: 'auth.json'
@@ -48,4 +49,17 @@ test('Customize cookies + Accept selection', async ({ page }, testInfo) => {
   await cookies.clickCustomizeAcceptSelectionButton();
   await testInfo.attach("Accept selection", {body: await page.screenshot(), contentType: "image/png"});
   await cookies.verifyPopupDisplayed(false);
+});
+
+test('Click Privacy Policy link', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const cookies: CookiesPopup = new CookiesPopup(page);
+  await testInfo.attach("Cookie popup", {body: await page.screenshot(), contentType: "image/png"});
+  await cookies.verifyPopupDisplayed();
+  await cookies.clickPrivacyLink();
+  await testInfo.attach("After Privacy Policy click", {body: await page.screenshot(), contentType: "image/png"});
+  await cookies.verifyPopupDisplayed();
+  // Verify if there are 2 open tabs in the browser
+  assert(page.context().pages().length == 2, "Expecting 2 open tabs");
+  //TODO: verify 2nd tab URL
 });
