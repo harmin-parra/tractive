@@ -38,8 +38,8 @@ jobs:
   commit:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # permissions:
-    #  contents: write
+    permissions:
+      contents: write
     needs: test
     runs-on: ubuntu-latest  
     steps:
