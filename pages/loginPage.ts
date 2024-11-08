@@ -84,7 +84,7 @@ class LoginPage {
     // Get the corresponding key of the Language enum value.
     var key = Object.keys(Language).find( key => Language[key] === lang);
     // Verify the title
-    await expect(this.form.locator('h2')).toHaveText(LoginFormTitle[key]);
+    await expect(this.form.locator('h2')).toHaveText(LoginFormTitle[String(key)]);
     // TODO: verify form input and button labels
   }
 
