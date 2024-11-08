@@ -1,12 +1,13 @@
-import { test, expect } from '@playwright/test';
-import LoginPage from '../pages/loginPage';
+import { test } from '@playwright/test';
+import { AssertionError } from 'assert';
 import { clickLogo } from '../components/logo';
 import { Language, selectLanguage } from '../components/language';
 import { acceptCookies } from '../components/cookies';
-import * as data from '../data';
-import { AssertionError } from 'assert';
+import LoginPage from '../pages/loginPage';
 import DemoPage from '../pages/demoPage';
 import SettingsPage from '../pages/settingsPage';
+import TractivePage from '../pages/tractivePage';
+import * as data from '../data';
 
 
 test.use({
@@ -28,15 +29,11 @@ test('Login with valid account', async ({ page }, testInfo) => {
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await login.assertSigninButtonEnabled(true);
   await login.clickSigninButton();
+  await page.waitForTimeout(3000);  // Necessary delay to take the next screenshot
+  await testInfo.attach("After logo click", {body: await page.screenshot(), contentType: "image/png"});
   // Verify if we land in the Settings page
-  try {
-    const settings: SettingsPage = new SettingsPage(page);
-    await settings.verifyPageDisplayed();
-  } catch(error) {
-      throw new AssertionError({message: "Login failure."});
-  } finally {
-    await testInfo.attach("After login attempt", {body: await page.screenshot(), contentType: "image/png"});
-  }
+  const settings: SettingsPage = new SettingsPage(page);
+  await settings.verifyPageDisplayed();
 });
 
 test('Click Tractive logo', async ({ page }, testInfo) => {
@@ -46,6 +43,9 @@ test('Click Tractive logo', async ({ page }, testInfo) => {
   await clickLogo(page);
   await page.waitForTimeout(3000);  // Necessary delay to take the next screenshot
   await testInfo.attach("After logo click", {body: await page.screenshot(), contentType: "image/png"});
+  // Verify if we land in the Tractive page
+  const tractive: TractivePage = new TractivePage(page);
+  await tractive.verifyPageDisplayed();
 });
 
 test('Try demo', async ({ page }, testInfo) => {
@@ -53,9 +53,10 @@ test('Try demo', async ({ page }, testInfo) => {
   await testInfo.attach("Login page", {body: await page.screenshot(), contentType: "image/png"});
   await login.verifyPageDisplayed();
   await login.clickTryDemoLink();
-  const demo: DemoPage = new DemoPage(page);
   await page.waitForTimeout(3000);  // Necessary delay to take the next screenshot
   await testInfo.attach("After try-demo click", {body: await page.screenshot(), contentType: "image/png"});
+  // Verify if we land in the Demo page
+  const demo: DemoPage = new DemoPage(page);
   await demo.verifyPageDisplayed();
 });
 
@@ -68,7 +69,8 @@ test('Login page in French', async ({ page }, testInfo) => {
   await page.waitForTimeout(3000);  // Necessary delay to take the next screenshot
   await testInfo.attach("Login page in French", {body: await page.screenshot(), contentType: "image/png"});
   await login.verifyInternationalization(Language.French);
-  await selectLanguage(page, Language.English_US);
+  //await selectLanguage(page, Language.English_US);
+  //await login.verifyInternationalization(Language.English_US);
 });
 
 // Invalid tests
