@@ -104,7 +104,7 @@ class SignupPage {
     var key = Object.keys(Language).find( key => Language[key] === lang );
     // Verify the title
     await expect(this.form.locator('h2')).toHaveText(SignupFormTitle[key]);
-    // TODO: verify form labels (email, password, button label, etc.)
+    // TODO: verify form labels
   }
 
 }

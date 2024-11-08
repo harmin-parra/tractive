@@ -30,7 +30,7 @@ enum SignupFormTitle {
 }
 
 // Labels of forms
-// TODO: Add enums for form labels (firstname, lastname, password, email, etc)
+// TODO: Add enums for form input and button labels (firstname, lastname, password, email, etc)
 
 // Changes the language for the website
 async function selectLanguage(page: Page, lang: Language) {

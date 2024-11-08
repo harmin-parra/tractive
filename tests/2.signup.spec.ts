@@ -86,7 +86,7 @@ test('Click Privacy Policy link', async ({ page }, testInfo) => {
   await signup.clickPrivacyLink();
   // Verify if there are 2 open tabs in the browser
   assert(page.context().pages().length == 2, "Expecting 2 open tabs");
-  //TODO: verify 2nd tab URL
+  // TODO: verify 2nd tab URL
 });
 
 test('Click Terms & Conditions link', async ({ page }, testInfo) => {
@@ -96,7 +96,7 @@ test('Click Terms & Conditions link', async ({ page }, testInfo) => {
   await signup.clickTermsLink();
   // Verify if there are 2 open tabs in the browser
   assert(page.context().pages().length == 2, "Expecting 2 open tabs");
-  //TODO: verify 2nd tab URL
+  // TODO: verify 2nd tab URL
 });
 
 // Internationalization tests

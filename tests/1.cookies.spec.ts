@@ -61,5 +61,5 @@ test('Click Privacy Policy link', async ({ page }, testInfo) => {
   await cookies.verifyPopupDisplayed();
   // Verify if there are 2 open tabs in the browser
   assert(page.context().pages().length == 2, "Expecting 2 open tabs");
-  //TODO: verify 2nd tab URL
+  // TODO: verify 2nd tab URL
 });
