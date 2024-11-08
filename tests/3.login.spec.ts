@@ -1,4 +1,4 @@
-import { test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { AssertionError } from 'assert';
 import { clickLogo } from '../components/logo';
 import { Language, selectLanguage } from '../components/language';
@@ -34,6 +34,30 @@ test('Login with valid account', async ({ page }, testInfo) => {
   // Verify if we land in the Settings page
   const settings: SettingsPage = new SettingsPage(page);
   await settings.verifyPageDisplayed();
+});
+
+test('Login with Apple', async ({ page }, testInfo) => {
+  const login: LoginPage = new LoginPage(page);
+  await testInfo.attach("Login page", {body: await page.screenshot(), contentType: "image/png"});
+  await login.verifyPageDisplayed();
+  const popupPromise = page.waitForEvent('popup');
+  await login.clickAppleSigninButton();
+  const popup = await popupPromise;
+  await popup.waitForTimeout(5000);  // Necessary delay to for the popup to load
+  await expect(popup).toHaveURL(/https:\/\/appleid\.apple\.com\/auth\/authorize\?client_id=.*/);
+  await testInfo.attach("After logo click", {body: await popup.screenshot(), contentType: "image/png"});
+});
+
+test('Login with Google', async ({ page }, testInfo) => {
+  const login: LoginPage = new LoginPage(page);
+  await testInfo.attach("Login page", {body: await page.screenshot(), contentType: "image/png"});
+  await login.verifyPageDisplayed();
+  const popupPromise = page.waitForEvent('popup');
+  await login.clickGoogleSigninButton();
+  const popup = await popupPromise;
+  await popup.waitForTimeout(5000);  // Necessary delay to for the popup to load
+  await expect(popup).toHaveURL(/https:\/\/accounts\.google\.com\/v3\/signin\/identifier\?.*/);
+  await testInfo.attach("After logo click", {body: await popup.screenshot(), contentType: "image/png"});
 });
 
 test('Click Tractive logo', async ({ page }, testInfo) => {
