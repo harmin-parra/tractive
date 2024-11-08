@@ -56,7 +56,7 @@ class CookiesPopup {
   // Customization of cookies methods
   async clickCustomizeLink() {
     await this.customizeLink.click();
-    // Verify first slide is disabled
+    // Verify first slide is disabled (required cookies)
     expect(this.page.locator(".slider").first()).toBeDisabled();
   }
 
