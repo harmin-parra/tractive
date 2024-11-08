@@ -1,3 +1,5 @@
+Command to install project dependencies: ``npm install``
+
 Command to run the tests: ``npx playwright test``
 
 Command to open the report: ``npx playwright show-report``
