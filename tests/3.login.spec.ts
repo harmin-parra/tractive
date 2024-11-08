@@ -7,6 +7,7 @@ import LoginPage from '../pages/loginPage';
 import DemoPage from '../pages/demoPage';
 import SettingsPage from '../pages/settingsPage';
 import TractivePage from '../pages/tractivePage';
+import ForgotPage from '../pages/forgotPage';
 import * as data from '../data';
 
 
@@ -70,6 +71,17 @@ test('Click Tractive logo', async ({ page }, testInfo) => {
   // Verify if we land in the Tractive page
   const tractive: TractivePage = new TractivePage(page);
   await tractive.verifyPageDisplayed();
+});
+
+test('Click Forgot password link', async ({ page }, testInfo) => {
+  const login: LoginPage = new LoginPage(page);
+  await testInfo.attach("Login page", {body: await page.screenshot(), contentType: "image/png"});
+  await login.verifyPageDisplayed();
+  await login.clickForgotLink();
+  await testInfo.attach("After Forgot password click", {body: await page.screenshot(), contentType: "image/png"});
+  // Verify if we land in the Forgot Password page
+  const forgot: ForgotPage = new ForgotPage(page);
+  await forgot.verifyPageDisplayed();
 });
 
 test('Try demo', async ({ page }, testInfo) => {
