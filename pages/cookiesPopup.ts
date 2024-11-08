@@ -1,4 +1,11 @@
 import { expect, type Locator, type Page } from '@playwright/test';
+import { AssertionError } from 'assert';
+
+enum Cookies {
+  Analytics = "analytics",
+  Marketing = "marketing",
+  Required = "required"
+}
 
 class CookiesPopup {
 
@@ -34,12 +41,16 @@ class CookiesPopup {
   async acceptAllCookies() {
     await expect(this.popup).toBeAttached();
     await this.okButton.click();
+    await this.verifyCookiePresent(Cookies.Analytics);
+    await this.verifyCookiePresent(Cookies.Marketing);
+    await this.verifyCookiePresent(Cookies.Required);
   }
   
   // Essential cookies button methods
   async acceptEssentialCookies() {
     await expect(this.popup).toBeAttached();
     await this.essentialButton.click();
+    await this.verifyCookiePresent(Cookies.Required);
   }
 
   // Customization of cookies methods
@@ -51,6 +62,9 @@ class CookiesPopup {
 
   async clickCustomizeAcceptAllButton() {
     await this.acceptAllButton.click();
+    await this.verifyCookiePresent(Cookies.Analytics);
+    await this.verifyCookiePresent(Cookies.Marketing);
+    await this.verifyCookiePresent(Cookies.Required);
   }
 
   async clickCustomizeAcceptSelectionButton() {
@@ -62,6 +76,21 @@ class CookiesPopup {
     await this.privacyLink.click();
   }
 
+  // Verify a given value is present in the "cookie_consent" cookie.
+  async verifyCookiePresent(value: Cookies) {
+    var cookie_found = false;
+    const cookies = await this.page.context().cookies();
+    for (let cookie of cookies) {
+      if (cookie['domain'].endsWith(".tractive.com") && cookie['name'] == "cookie_consent") {
+        let values = cookie['value'].split(',');
+        if (!values.includes(value))
+          throw new AssertionError({message: `"${value}" is not present in the cookies`})
+        cookie_found = true;
+      }
+    }
+    if (!cookie_found)
+      throw new AssertionError({message: `"${value}" is not present in the cookies`})
+  }
 }
 
 export default CookiesPopup;
