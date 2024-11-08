@@ -38,7 +38,7 @@ test('Sign up with email', async ({ page }, testInfo) => {
   await testInfo.attach("Filled out form", {body: await page.screenshot(), contentType: "image/png"});
   await signup.clickCreateButton();
   await page.waitForTimeout(3000);  // Necessary delay to take the next screenshot
-  await testInfo.attach("After sign up", {body: await page.screenshot(), contentType: "image/png"});
+  await testInfo.attach("After Sign-up", {body: await page.screenshot(), contentType: "image/png"});
   // Verify if we land in the Activation page
   const activation: ActivationPage = new ActivationPage(page);
   await activation.verifyPageDisplayed();
@@ -135,7 +135,7 @@ test('Sign up with already existing email', async ({ page }, testInfo) => {
     if (error instanceof AssertionError)
       throw error;
   } finally {
-    await testInfo.attach("After sign up attempt", {body: await page.screenshot(), contentType: "image/png"});
+    await testInfo.attach("After sign-up attempt", {body: await page.screenshot(), contentType: "image/png"});
   }
 });
 

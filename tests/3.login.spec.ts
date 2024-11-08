@@ -31,7 +31,7 @@ test('Login with valid account', async ({ page }, testInfo) => {
   await login.assertSigninButtonEnabled(true);
   await login.clickSigninButton();
   await page.waitForTimeout(3000);  // Necessary delay to take the next screenshot
-  await testInfo.attach("After logo click", {body: await page.screenshot(), contentType: "image/png"});
+  await testInfo.attach("After Sign-in click", {body: await page.screenshot(), contentType: "image/png"});
   // Verify if we land in the Settings page
   const settings: SettingsPage = new SettingsPage(page);
   await settings.verifyPageDisplayed();
@@ -46,7 +46,7 @@ test('Login with Apple', async ({ page }, testInfo) => {
   const popup = await popupPromise;
   await popup.waitForTimeout(5000);  // Necessary delay to for the popup to load
   await expect(popup).toHaveURL(/https:\/\/appleid\.apple\.com\/auth\/authorize\?client_id=.*/);
-  await testInfo.attach("After logo click", {body: await popup.screenshot(), contentType: "image/png"});
+  await testInfo.attach("After Sign-in click", {body: await popup.screenshot(), contentType: "image/png"});
 });
 
 test('Login with Google', async ({ page }, testInfo) => {
@@ -58,7 +58,7 @@ test('Login with Google', async ({ page }, testInfo) => {
   const popup = await popupPromise;
   await popup.waitForTimeout(5000);  // Necessary delay to for the popup to load
   await expect(popup).toHaveURL(/https:\/\/accounts\.google\.com\/v3\/signin\/identifier\?.*/);
-  await testInfo.attach("After logo click", {body: await popup.screenshot(), contentType: "image/png"});
+  await testInfo.attach("After Sign-in click", {body: await popup.screenshot(), contentType: "image/png"});
 });
 
 test('Click Tractive logo', async ({ page }, testInfo) => {
